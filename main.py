@@ -1,31 +1,18 @@
-from flask import Flask, request, jsonify
+import sys
+import os
+from flask import Flask
+
+# Keep the project root as the path
+project_root = r"C:\Users\matth\personalProjects\ForageStudy"
+sys.path.append(project_root)
+
+# CHANGE THIS LINE: Add 'backend.' to the front
+from backend.api.account import account_bp 
 
 app = Flask(__name__)
 
-from flask import Flask, request, jsonify
-
-app = Flask(__name__)
-
-@app.route("/add", methods=["POST"])
-def add_numbers():
-    data = request.get_json()
-
-    if not data:
-        return jsonify({"error": "Invalid or missing JSON"}), 400
-
-    a = data.get("a")
-    b = data.get("b")
-
-    if a is None or b is None:
-        return jsonify({"error": "Please provide both 'a' and 'b'"}), 400
-
-    return jsonify({
-        "a": a,
-        "b": b,
-        "sum": a + b
-    }), 200
-
-
+app.register_blueprint(account_bp, url_prefix='/api/accounts')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    print("🚀 Server starting on http://localhost:5000")
+    app.run(debug=True, port=5000)
